@@ -50,12 +50,19 @@ public class CategoryService {
 		return list.stream().map(x -> new CategoryDTO(x)).collect(Collectors.toList());
 	}
 
+	@Transactional(readOnly = true)
 	public CategoryDTO findById(Long id) {
 		Optional<Category> obj = repository.findById(id);
-		Category entity = obj.orElseThrow(() -> new EntityNotFoundException("Não existe a entidade."));
+		Category entity = obj.orElseThrow(() -> new EntityNotFoundException("Entidade não existe."));
 		return new CategoryDTO(entity);
 	}
-	
-	
+
+	@Transactional
+	public CategoryDTO insert(CategoryDTO dto) {
+		Category entity = new Category();
+		entity.setName(dto.getName());
+		entity = repository.save(entity);
+		return new CategoryDTO(entity);
+	}
 	
 }
