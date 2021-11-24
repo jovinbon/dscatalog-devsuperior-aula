@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,9 +60,15 @@ public class ProductService {
 		return list.stream().map(x -> new ProductDTO(x)).collect(Collectors.toList());
 	}*/
 	
-	// --------lista com paginação--------
-	public Page<ProductDTO> findAllPaged(PageRequest pageResquest) {
+	// --------lista com paginação com PageRequest--------
+	/*public Page<ProductDTO> findAllPaged(PageRequest pageResquest) {
 		Page<Product> list = repository.findAll(pageResquest);
+		return list.map(x -> new ProductDTO(x));
+	}*/
+	
+	// --------lista com paginação com Pageable--------
+	public Page<ProductDTO> findAllPaged(Pageable pageable) {
+		Page<Product> list = repository.findAll(pageable);
 		return list.map(x -> new ProductDTO(x));
 	}
 	
